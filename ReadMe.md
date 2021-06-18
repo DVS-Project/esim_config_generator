@@ -1,3 +1,56 @@
+中文版注释
+
+## 基本介绍
+
+此代码通过ESIM生成飞椅数据集形式的数据序列。生成的数据用来训练 Reducing the Sim-to-Real Gap for Event Cameras 一文中的方法。
+
+## 运行条件
+
+必须首先安装了ESIM。请看[这里](https://github.com/uzh-rpg/rpg_esim/wiki/Installation)。并且运行前激活了esim的环境。
+
+之后修改配置文件：在`generator_config`文件夹中 修改对应的json文件。
+
+`foreground_images`路径包含的文件将在ESIM仿真器中高速“飞行”以产生数据。这些图片 _必须_ 是4通道的png图像（即rgba），否则ESIM会报错。作者使用`tools/jpg_to_png`代码将jpgs图片格式转成pngs。
+
+`background_images` _必须_ 为jpg图片，否则ESIM会报错（作者在这里吐槽了一下ESIM）。
+
+当然，需要保证在`foreground_images`路径下至少包括`max_num`个图片，`background_images`下至少有1张图片。
+
+
+## 使用方法
+
+主要工作由 `scripts/generate_esim2d_scenes.py` 实现。运行时需要一个配置文件（generator_config中的某个），或使用命令行参数覆盖配置文件中的参数，生成：
+  1. 一个场景文件（包括相机轨迹、图像、图像大小和序列时间）
+  2. ESIM的配置文件（包括对比度阈值、偏置等）
+  3. 一个ROS的launch文件
+
+默认生成路径： `/tmp/000000000_autoscene.txt`, `/tmp/000000000_config2d.txt` 和 `/tmp/esim.launch` 
+
+之后，可以运行 `/scripts/2d_launch_esim.py` 启动ROS，需要传入launch文件路径，例如：
+```python scripts/2d_launch_esim.py --launch_file_path="/tmp/esim.launch"```
+
+以上所有步骤可以通过运行 `2d_simulator_generator.sh` 实现。这个脚本包含了上面完整的过程。
+
+
+## 从已有配置文件生成数据集
+
+可以通过已有的配置文件和场景生成数据集。
+
+例如生成"Reducing the Sim-to-Real Gap for Event Cameras"一文中的训练数据，你需要首先下载COCO数据集，并[从这里下载]](https://drive.google.com/drive/folders/1F6fNgZFmMvGkw6sAwDFE7j8Q7EH3TMve?usp=sharing) 用到的前景图片。
+
+之后[从这里下载](https://drive.google.com/drive/folders/1ILoFnR5BHR17F0VGEzR0JIBfisw1nkc4?usp=sharing) 场景和配置文件。
+
+默认情况下，场景和配置文件中的路径是作者自己的（xxx_autoscene.txt）。你需要修改所有文件中的相关路径。可以采用高[sed](https://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line)
+
+最后，直接运行 ```python scripts/generate_preset.py /path/to/config/files``` 即可。主义需要激活ROS环境。
+
+（百度网盘搬运：链接: https://pan.baidu.com/s/1RRZ_her1lpR1TK4UvFFkXQ 提取码: ztti）
+
+
+
+------   以下为原文   ------
+
+
 ## About
 This code allows generating flying chairs style sequences for the Multi-Object-2D simulator from [ESIM](https://github.com/uzh-rpg/rpg_esim). This code was used to generate sequences for [How to Train Your Event Camera Neural Network](https://timostoff.github.io/20ecnn), please cite this work if you use this in an academic context.
 ```
