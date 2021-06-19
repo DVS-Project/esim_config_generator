@@ -4,17 +4,34 @@
 
 此代码通过ESIM生成飞椅数据集形式的数据序列。生成的数据用来训练 Reducing the Sim-to-Real Gap for Event Cameras 一文中的方法。
 
+
+# Comments from larrydong:
+
+1. 运行环境是python2.7（否则会在运行时有error），conda虚拟环境需要的依赖项有：
+conda install matplotlib defusedxml opencv
+conda install -c conda-forge netifaces
+pip install rospkg
+
+2. 数据准备：需要准备ESIM的背景数据（例如COCO），以及前景数据（COCO或作者使用的图片）。背景数据至少有1张jpg，前景数据可以配置有多个路径，均至少有max_num张png图片；作者提供了jpg转png代码。详见“从已有配置文件生成数据集”相应链接。
+
+3. 运行步骤：第一步根据json配置文件生成ESIM的配置文件，第二步按照ESIM的配置文件生成ros的bag数据。也可以用提供的脚本批量生成。
+
+4. 如果bag数据用于后续其他操作，例如e2vid，需要转成HDF5格式。转换方法参考：[github.com/TimoStoff/events_contrast_maximization](github.com/TimoStoff/events_contrast_maximization)
+
+
+
+
 ## 运行条件
 
 必须首先安装了ESIM。请看[这里](https://github.com/uzh-rpg/rpg_esim/wiki/Installation)。并且运行前激活了esim的环境。
 
 之后修改配置文件：在`generator_config`文件夹中 修改对应的json文件。
 
-`foreground_images`路径包含的文件将在ESIM仿真器中高速“飞行”以产生数据。这些图片 _必须_ 是4通道的png图像（即rgba），否则ESIM会报错。作者使用`tools/jpg_to_png`代码将jpgs图片格式转成pngs。
+`foreground_images`路径包含的文件将在ESIM仿真器中高速“飞行”以产生数据。这些图片 _必须_ 是4通道的png图像（注释：即rgba），否则ESIM会报错。作者使用`tools/jpg_to_png`代码将jpgs图片格式转成pngs。
 
 `background_images` _必须_ 为jpg图片，否则ESIM会报错（作者在这里吐槽了一下ESIM）。
 
-当然，需要保证在`foreground_images`路径下至少包括`max_num`个图片，`background_images`下至少有1张图片。
+当然，需要保证在`foreground_images`中的每个路径下至少包括`max_num`个图片（注释：foreground_images包含多个路径，每个路径都必须有max_num个图，代码随机选择[`min_num`, `max_num`]一个数字作为前景图片的数量），`background_images`下至少有1张图片（注释：代码从背景图片路径中随机选择1张）。
 
 
 ## 使用方法
@@ -48,8 +65,7 @@
 
 
 
-------   以下为原文   ------
-
+# ------   以下为原文   ------
 
 ## About
 This code allows generating flying chairs style sequences for the Multi-Object-2D simulator from [ESIM](https://github.com/uzh-rpg/rpg_esim). This code was used to generate sequences for [How to Train Your Event Camera Neural Network](https://timostoff.github.io/20ecnn), please cite this work if you use this in an academic context.
