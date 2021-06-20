@@ -18,8 +18,20 @@ pip install rospkg
 
 4. 如果bag数据用于后续其他操作，例如e2vid，需要转成HDF5格式。转换方法参考：[github.com/TimoStoff/events_contrast_maximization](github.com/TimoStoff/events_contrast_maximization)
 
+5. And, 请将/tmp中生成的文件及时保存出来，否则电脑reboot之后就！没！了！
 
+6. 完整代码过程
+``` bash 
+python scripts/generate_esim2d_scenes.py generator_config/slow_motions.json --scene_id=0 --contrast_threshold_mean=0.1 --contrast_threshold_sigma=0.1
 
+source ~/esim_ws/devel/setup.bash (ss_esim)
+
+conda activate py27
+
+roscore
+
+python scripts/2d_launch_esim.py --launch_file_path="/tmp/esim.launch"
+```
 
 ## 运行条件
 

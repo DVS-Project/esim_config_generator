@@ -18,19 +18,15 @@
         },
 	"foreground_images": {
 		"png_dataset": {
-			"path": "/home/path/to/esim_objects",
+			"path": "/home/larrydong/dataset/esim_generator/Foreground_Objects",
 			"proportion": 0.8
-		},	
-		"coco_dataset": {
-			"path": "/home/path/to/coco_png",
-			"proportion": 0.2
 		},	
 		"min_num": 10,
 		"max_num" : 30
     },
 	"background_images": {
 		"coco_dataset": {
-			"path": "/home/path/to/coco"
+			"path": "/home/larrydong/dataset/esim_generator/val2017"
 		}	
     },
 	"camera_params": {
