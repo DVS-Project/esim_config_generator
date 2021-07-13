@@ -152,6 +152,7 @@ def generate_scene_file_multispeed(output_path, image_size, duration, background
     """
     f = open(output_path, "w")
     f.write("{} {} {}\n".format(image_size[0], image_size[1], duration))
+    # the 1st line of autoscene.txt.  --> 256, 256, 10
 
     background_image_paths = []
     for image_set in background_images:
@@ -159,6 +160,8 @@ def generate_scene_file_multispeed(output_path, image_size, duration, background
     assert(len(background_image_paths) > 0)
     background = random.choice(background_image_paths)
 
+    #~ geneate random foreground objects, number is random, from maybe 2 paths.
+    # after generation, shuffle.
     foreground_image_paths = []
     num_images = np.random.randint(foreground_images['min_num'], foreground_images['max_num'])
     print("{} foreground images".format(num_images))
@@ -174,6 +177,8 @@ def generate_scene_file_multispeed(output_path, image_size, duration, background
     random_speed = random.uniform(bg_min_velocity, bg_max_velocity)
     f.write(get_motion_string(background, random_speed, bg_min_ang_velocity_deg, bg_max_ang_velocity_deg,
                               bg_growthmin, bg_growthmax, median_filter_size, gaussian_blur_sigma)[0])
+    # the 2st line of autoscene.txt.  --> xxx.jpg & 12 params
+
     #Foreground
     object_speeds = []
     obj_strings = []

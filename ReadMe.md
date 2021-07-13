@@ -69,11 +69,18 @@ python scripts/2d_launch_esim.py --launch_file_path="/tmp/esim.launch"
 
 之后[从这里下载](https://drive.google.com/drive/folders/1ILoFnR5BHR17F0VGEzR0JIBfisw1nkc4?usp=sharing) 场景和配置文件。
 
-默认情况下，场景和配置文件中的路径是作者自己的（xxx_autoscene.txt）。你需要修改所有文件中的相关路径。可以采用高[sed](https://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line)
+默认情况下，场景和配置文件中的路径是作者自己的（xxx_autoscene.txt）。你需要修改所有文件中的相关路径。可以采用[sed](https://stackoverflow.com/questions/11392478/how-to-replace-a-string-in-multiple-files-in-linux-command-line)
 
 最后，直接运行 ```python scripts/generate_preset.py /path/to/config/files``` 即可。主义需要激活ROS环境。
 
 （百度网盘搬运：链接: https://pan.baidu.com/s/1RRZ_her1lpR1TK4UvFFkXQ 提取码: ztti）
+
+### 个人补充
+xxx_config2d.txt 是 相机运动轨迹、等相关配置，其中指定了场景的配置路径：/tmp/xxx_autoscene.txt
+xxx_autoscene.txt 是场景配置，包括：
+  第一行：256 256 10.0 是图片大小和持续时间
+  第二行：是background的图片，仅有这一个是.jpg文件，后为12个运动参数
+  第三-最后一行：foreground图片，作者从2个路径随机选择[min, max]个图片，然后shuffle。所以看起来非常乱。whatever
 
 
 
