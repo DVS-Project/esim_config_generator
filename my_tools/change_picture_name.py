@@ -21,33 +21,35 @@ def get_foreground_pictures(file_dir):
 
 
 
-
-# def modify_config(config_path, picture_path, picture_names):
-#     file_names = []
-#     for name in os.listdir(config_path):
-#         id, n = name.split("_")
-#         if(n == "autoscene.txt"):
-#             L = []
-#             with open(config_path + "/" + name, "r") as f:
-#                 for line in f:
-#                     L.append(line)      # save all lines
-#                 line_number = len(L)
-#                 for i in range(1, len(L)):
-#                     first_part = L[i].split(" ")[0]
-#                     first_part_new = picture_path + "/" + random.choice(picture_names)
-#                     print("old: ", first_part, "-> new: ", first_part_new)
-#                 print(11111)
-
+# 1. save all lines in on file
+# 2. modify the 1 line by bg_picture.jpg
+# 3. modify the 2 - end lines by fg_picture.png
+# 4. save to a new file
 
 def modify_config(config_path, config_path_out, bg_pictures, fg_pictures):
+    print("Modifying names......")
     for name in os.listdir(config_path):
-        if(name.split("_")[-1].split(".")[0] == "autoscene"):
+        # only deal with *autoscene.txt, config2d.txt no change. Put all in /tmp/ is okay
+        if(name.split("_")[-1].split(".")[0] == "autoscene"):   
+            print(name)
+            new_lines = []
             with open(config_path + "/" + name, "r") as f:
-                L = []
+                old_lines = []
                 for line in f:
-                    L.append(line)
-                # modify the lines
-    # TODO: modify the files...
+                    old_lines.append(line)
+                new_lines.append(old_lines[0])          # line 0
+                l1 = old_lines[1].split(" ")
+                l1[0] = random.choice(bg_pictures)      # line 1
+                l1 = " ".join(l1)
+                new_lines.append(l1)
+                for i in range(2, len(old_lines)):
+                    l = old_lines[i].split(" ")
+                    l[0] = random.choice(fg_pictures)
+                    new_lines.append(" ".join(l))
+            with open(config_path_out + "/" + name, "w") as f:
+                for l in new_lines:
+                    f.writelines(l)
+    
 
 
 

@@ -36,6 +36,7 @@ if __name__ == "__main__":
     launch_file_path = "/tmp/esim.launch"
 
     for config in configs:
+        print("---------------------  config: ", config, "--------------------")
         create_launch_file(config, launch_file_path)
 
         rospy.init_node("remote_launcher")
@@ -43,6 +44,7 @@ if __name__ == "__main__":
         launch.start()
 
         while process_generate_running:
-                rospy.sleep(0.05)
+            rospy.sleep(0.05)
 
         launch.shutdown()
+        print("==> Shutdown...")
