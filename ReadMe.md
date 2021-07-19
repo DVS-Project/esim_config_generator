@@ -65,7 +65,7 @@ python scripts/2d_launch_esim.py --launch_file_path="/tmp/esim.launch"
 
 可以通过已有的配置文件和场景生成数据集。
 
-例如生成"Reducing the Sim-to-Real Gap for Event Cameras"一文中的训练数据，你需要首先下载COCO数据集，并[从这里下载]](https://drive.google.com/drive/folders/1F6fNgZFmMvGkw6sAwDFE7j8Q7EH3TMve?usp=sharing) 用到的前景图片。
+例如生成"Reducing the Sim-to-Real Gap for Event Cameras"一文中的训练数据，你需要首先下载COCO数据集，并[从这里下载](https://drive.google.com/drive/folders/1F6fNgZFmMvGkw6sAwDFE7j8Q7EH3TMve?usp=sharing) 用到的前景图片。
 
 之后[从这里下载](https://drive.google.com/drive/folders/1ILoFnR5BHR17F0VGEzR0JIBfisw1nkc4?usp=sharing) 场景和配置文件。
 
@@ -82,6 +82,11 @@ xxx_autoscene.txt 是场景配置，包括：
   第二行：是background的图片，仅有这一个是.jpg文件，后为12个运动参数
   第三-最后一行：foreground图片，作者从2个路径随机选择[min, max]个图片，然后shuffle。所以看起来非常乱。whatever
 
+### 存在问题
+从配置文件生成数据集时，作者将全部autoscene/config2d.txt文件放到了tmp下运行，
+运行时，在python程序里，通过roslaunch启动和shutdown停止。
+但停止时，不知是什么原因，停止的不彻底，只能生成第一个 .bag，后面的无法生成。故采用脚本，在CLI中启动关闭程序，避免了shutdown不干净的问题。
+为此，运行： `my_tools/generate_one_by_one.sh`
 
 
 # ------   以下为原文   ------
