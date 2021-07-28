@@ -89,6 +89,38 @@ xxx_autoscene.txt 是场景配置，包括：
 为此，运行： `my_tools/generate_one_by_one.sh`
 
 
+
+# DVS-Project:
+
+1. 准备相关数据，包括：背景图片、前景图片，分别放到指定路径；
+
+2. 准备配置文件，包括：id_autoscene.txt 和 id_config2d.txt
+
+3. 修改配置文件：
+* 修改config2d中的`--path_to_output_bag`和`--path_to_sequence_file`，这个控制读取的autoscene文件的路径，以及生成的rosbag的地址
+* 修改autoscene的第一行数据：分辨率x/y/时间；第二行数据必须是xxx.jpg文件，需修改路径且保证存在相应图片；第三~最后一行数据，必须是xxx.png文件，需修改路径且保证存在相应图片。如果下载的COCO数据集与使用的不同，需要修改具体的图片名称。请参考我自己写的 `my_tools/change_picture_name.py`文件，统一修改配置文件中的图片id。
+* 使用`sed`指令批量修改文件： 
+```bash
+sed -i 's/string a/string b/g' *autoscene.txt
+```
+替换当前所有autoscene文件中的string a为string b
+
+
+4. 运行时，会自动从路径读取全部配置文件进行仿真：
+```bash
+conda activate py27
+python scripts/generate_preset.py /tmp     # 默认都在/tmp路径下存储
+```
+但由于作者的代码存在问题，不能正确停止每次生成，造成从第2个起数据生成失败。故我采用shell脚本，每次只生成一个数据后，停止程序，再次运行。请修改并运行：`my_tools/generate_one_by_one.sh`。
+
+5. 生成的rosbag的速度与：config2d中ESIM的配置、autoscene文件中分辨率、持续时间以及前景图片数量有关。如果速度过慢，可以删除过多的前景图片：
+```bash
+sed -i 's/10.0/5.0/1' *autoscene.txt  # 第一处10.0改成5.0
+sed '5,$d' *autoscene.txt             # 删除第5-最后一行数据
+```
+
+
+
 # ------   以下为原文   ------
 
 ## About

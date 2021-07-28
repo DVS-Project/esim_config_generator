@@ -6,11 +6,12 @@
 conda activate py27
 source ~/sim_ws/devel/setup.bash
 
-config_dir=/home/larrydong/dataset/esim_generator/configs
+config_dir=/home/larrydong/dataset/esim_generator/configs_1280x800
 autoscene_files=(`ls $config_dir | grep "autoscene" | sort -d`)   # make an array
 config2d_files=(`ls $config_dir | grep "config2d" | sort -d`)
 
-bag_save_dir=/home/larrydong/dataset/esim_generator/rosbag
+# bag_save_dir=/home/larrydong/dataset/esim_generator/rosbag_1280x800
+bag_save_dir=/media/larrydong/Datasets
 
 
 idx=0
@@ -29,9 +30,11 @@ do
     python ../scripts/generate_preset.py /tmp
     echo "Generate done. No. $idx"
     `rm /tmp/$autoscene /tmp/$config2d`
-    
+
+    `mv /tmp/*.bag $bag_save_dir`           # save on time.
+
     idx=$[$idx + 1]
 done
 
-`mv /tmp/*.bag $bag_save_dir`
+
 echo "Move all bags to file: $bag_save_dir"
